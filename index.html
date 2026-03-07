@@ -14,40 +14,60 @@
     font-family: Arial, sans-serif;
   }
 
-  /* Стартовая открытка */
-  #card {
+  /* --- СЛАЙД 1 --- */
+  #slide1 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #envelope {
     width: 300px;
-    height: 300px;
-    background: #ffb6c1;
-    border-radius: 20px;
+    height: 200px;
+    background: #fff;
+    border-radius: 10px;
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
     transition: transform 0.2s;
   }
 
-  #card:hover {
+  #envelope::before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 150px solid transparent;
+    border-right: 150px solid transparent;
+    border-bottom: 60px solid #fff;
+    top: -60px;
+    left: 0;
+  }
+
+  #envelope:hover {
     transform: scale(1.05);
   }
 
-  #peach {
-    font-size: 80px;
+  #peach1 {
+    font-size: 60px;
+    z-index: 1;
   }
 
-  /* Экран выбора */
-  #choiceScreen {
+  /* --- СЛАЙД 2 --- */
+  #slide2 {
     display: none;
     flex-direction: column;
     align-items: center;
     text-align: center;
   }
 
-  #choiceScreen h2 {
+  #slide2 h2 {
     color: #fff;
     margin-bottom: 40px;
-    font-size: 30px;
+    font-size: 28px;
   }
 
   #options {
@@ -56,78 +76,109 @@
   }
 
   .option {
-    width: 150px;
-    height: 150px;
+    width: 400px;
+    height: 400px;
     background: #ffb6c1;
-    border-radius: 15px;
+    border-radius: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 22px;
     cursor: pointer;
     transition: all 0.3s;
     color: #800000;
     user-select: none;
+    position: relative;
+    overflow: hidden;
   }
 
-  #message {
-    margin-top: 40px;
+  .emoji {
+    position: absolute;
+    top: 10px;
     font-size: 30px;
+  }
+
+  /* --- СЛАЙД 3 --- */
+  #slide3 {
+    display: none;
+    justify-content: center;
+    align-items: center;
     color: #fff;
+    font-size: 40px;
   }
 
 </style>
 </head>
 <body>
 
-  <!-- Стартовая открытка -->
-  <div id="card">
-    <div id="peach">🍑</div>
+<!-- СЛАЙД 1 -->
+<div id="slide1">
+  <div id="envelope">
+    <div id="peach1">🍑</div>
   </div>
+</div>
 
-  <!-- Экран выбора -->
-  <div id="choiceScreen">
-    <h2>Сделай правильный выбор</h2>
-    <div id="options">
-      <div id="efremov" class="option">Ефремов ВЕЛИКИЙ</div>
-      <div id="vampire" class="option">жалкий вампир Деймон</div>
+<!-- СЛАЙД 2 -->
+<div id="slide2">
+  <h2>Любимая, выбор за тобой 😉🫦</h2>
+  <div id="options">
+    <div id="efremov" class="option">
+      Ефремов ВЕЛИКИЙ
+      <div class="emoji" id="hearts"></div>
     </div>
-    <div id="message"></div>
+    <div id="vampire" class="option">
+      жалкий вампир Деймон
+      <div class="emoji" id="dislike"></div>
+    </div>
   </div>
+</div>
+
+<!-- СЛАЙД 3 -->
+<div id="slide3">
+  8 марта ❤️
+</div>
 
 <script>
-const card = document.getElementById('card');
-const choiceScreen = document.getElementById('choiceScreen');
+const slide1 = document.getElementById('slide1');
+const slide2 = document.getElementById('slide2');
+const slide3 = document.getElementById('slide3');
+
+const envelope = document.getElementById('envelope');
 const efremov = document.getElementById('efremov');
 const vampire = document.getElementById('vampire');
-const message = document.getElementById('message');
+const hearts = document.getElementById('hearts');
+const dislike = document.getElementById('dislike');
 
-let efremovSize = 150;
-let vampireSize = 150;
-const minSize = 50;
-const maxSize = 250;
-const step = 20;
+let efremovSize = 400;
+let vampireSize = 400;
+const minVampire = 50; 
+const maxEfremov = 600; 
+const step = (vampireSize - minVampire) / 16; // 16 кликов
 
-// Нажатие на персик открывает выбор
-card.addEventListener('click', () => {
-  card.style.display = 'none';
-  choiceScreen.style.display = 'flex';
+// --- СЛАЙД 1 ---
+envelope.addEventListener('click', () => {
+  slide1.style.display = 'none';
+  slide2.style.display = 'flex';
 });
 
-// Нажатие на Ефремова
+// --- СЛАЙД 2 ---
 efremov.addEventListener('click', () => {
-  message.textContent = "С 8 марта ❤️";
+  hearts.textContent += '❤️';
+  slide2.style.display = 'none';
+  slide3.style.display = 'flex';
 });
 
-// Нажатие на вампира
 vampire.addEventListener('click', () => {
-  vampireSize = Math.max(minSize, vampireSize - step);
-  efremovSize = Math.min(maxSize, efremovSize + step);
+  vampireSize = Math.max(minVampire, vampireSize - step);
+  efremovSize = Math.min(maxEfremov, efremovSize + step);
+
   vampire.style.width = vampire.style.height = vampireSize + 'px';
   efremov.style.width = efremov.style.height = efremovSize + 'px';
-});
-</script>
 
+  dislike.textContent += '👎';
+});
+
+</script>
 </body>
 </html>
