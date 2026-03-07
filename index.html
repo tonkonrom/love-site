@@ -12,8 +12,6 @@ body {
   font-family: Arial, sans-serif;
   position: relative;
 }
-
-/* Общий стиль для эмодзи */
 .particle {
   position: absolute;
   pointer-events: none;
@@ -21,8 +19,6 @@ body {
   z-index: 1;
   opacity: 1;
 }
-
-/* Слайд 1 */
 #slide1 {
   display:flex;
   justify-content:center;
@@ -54,8 +50,6 @@ body {
   color:pink;
   z-index:6;
 }
-
-/* Слайд 2 */
 #slide2 {
   display:none;
   flex-direction:column;
@@ -68,7 +62,7 @@ body {
 #slide2 h2 {
   color:#fff;
   font-size:28px;
-  margin-top:80px;
+  margin-top:120px; /* чуть ниже */
   margin-bottom:20px;
   z-index:5;
 }
@@ -76,7 +70,7 @@ body {
   display:flex;
   gap:50px;
   z-index:5;
-  margin-top:20px;
+  margin-top:40px; /* квадраты чуть ниже */
 }
 .option {
   background:#fff;
@@ -101,8 +95,6 @@ body {
   font-size:35px;
   z-index:1;
 }
-
-/* Слайд 3 */
 #slide3 {
   display:none;
   width:100%;
@@ -121,7 +113,6 @@ body {
   text-align:center;
   width:100%;
 }
-/* Сердца на 3 слайде */
 .heart {
   position:absolute;
   color:red;
@@ -134,7 +125,7 @@ body {
 
 <div id="slide1">
   <div id="envelope">
-    <div id="peach1">🍑</div>
+    <div id="peach1">🍑 Шлёпни меня!</div>
   </div>
 </div>
 
@@ -142,11 +133,11 @@ body {
   <h2>Любимая, выбор за тобой 😉🫦</h2>
   <div id="options">
     <div id="efremov" class="option">
-      Ромочка, дорогой, самый любимый, прекрасный и хороший
+      Ромочка, дорогой, самый любимый, прекрасный и хороший (179 см)
       <div class="emoji" id="hearts"></div>
     </div>
     <div id="vampire" class="option">
-      жалкий вампир Деймон
+      Дэймон, жалкий вампир (177 см)
       <div class="emoji" id="dislike"></div>
     </div>
   </div>
@@ -164,7 +155,6 @@ const envelope=document.getElementById('envelope');
 const efremov=document.getElementById('efremov');
 const vampire=document.getElementById('vampire');
 
-// --- Цветы на первом слайде ---
 for(let i=0;i<5;i++){
   const f=document.createElement('div');
   f.classList.add('flower');
@@ -174,7 +164,6 @@ for(let i=0;i<5;i++){
   slide1.appendChild(f);
 }
 
-// --- Функция создания эмодзи ---
 function createParticles(parent,count,symbols,minSize,maxSize){
   let particles=[];
   for(let i=0;i<count;i++){
@@ -185,18 +174,15 @@ function createParticles(parent,count,symbols,minSize,maxSize){
     p.style.bottom=Math.random()*window.innerHeight+'px';
     p.style.fontSize=(minSize+Math.random()*(maxSize-minSize))+'px';
     parent.appendChild(p);
-    // скорость и хаотичность
-    particles.push({el:p, speed:0.2+Math.random()*0.5, offsetX:Math.random()*2-1});
+    particles.push({el:p, speed:0.08+Math.random()*0.2, offsetX:(Math.random()*2-1)});
   }
   return particles;
 }
 
-// --- Анимация эмодзи ---
 function animateParticles(particles){
   particles.forEach(p=>{
     let bottom=parseFloat(p.el.style.bottom);
     bottom+=p.speed;
-    // хаотичное движение по горизонтали
     let left=parseFloat(p.el.style.left);
     left+=p.offsetX;
     if(bottom>window.innerHeight+50){
@@ -211,11 +197,9 @@ function animateParticles(particles){
   requestAnimationFrame(()=>animateParticles(particles));
 }
 
-// --- Слайд 1 ---
 let particles1=createParticles(slide1,50,['✨','🌼','🦋','🌸'],15,30);
 animateParticles(particles1);
 
-// --- Клик по конверту ---
 envelope.addEventListener('click',()=>{
   slide1.style.display='none';
   slide2.style.display='flex';
@@ -223,12 +207,9 @@ envelope.addEventListener('click',()=>{
   animateParticles(particles2);
 });
 
-// --- Слайд 2 ---
 efremov.addEventListener('click',()=>{
   slide2.style.display='none';
   slide3.style.display='flex';
-
-  // Красные сердца снизу вверх
   setInterval(()=>{
     const heart=document.createElement('div');
     heart.classList.add('heart');
@@ -236,11 +217,10 @@ efremov.addEventListener('click',()=>{
     heart.style.bottom='-30px';
     heart.style.fontSize=(15+Math.random()*15)+'px';
     slide3.appendChild(heart);
-    // анимация движения вверх
     let b=-30;
     let offsetX=(Math.random()*2-1);
     function rise(){
-      b+=0.5+Math.random()*0.5; // медленно
+      b+=0.5+Math.random()*0.5;
       let left=parseFloat(heart.style.left)+offsetX;
       heart.style.bottom=b+'px';
       heart.style.left=left+'px';
@@ -248,12 +228,12 @@ efremov.addEventListener('click',()=>{
       else heart.remove();
     }
     rise();
-  },200);
+  },500); // немного сердечек, не закрывают текст
 });
 
 vampire.addEventListener('click',()=>{
-  vampire.style.width=vampire.style.height=Math.max(20,parseInt(vampire.style.width)-25)+'px';
-  efremov.style.width=efremov.style.height=Math.min(window.innerWidth,parseInt(efremov.style.width)+25)+'px';
+  vampire.style.width= vampire.style.height=Math.max(20,parseInt(vampire.style.width)-25)+'px';
+  efremov.style.width= efremov.style.height=Math.min(window.innerWidth,parseInt(efremov.style.width)+25)+'px';
 });
 </script>
 </body>
