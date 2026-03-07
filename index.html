@@ -13,23 +13,16 @@ body {
   position: relative;
 }
 
-/* --- Фоновые эмодзи --- */
+/* --- Эмодзи общий стиль --- */
 .particle {
   position: absolute;
-  font-size: 20px;
   pointer-events: none;
   user-select: none;
-  opacity: 1;
-  animation: float 15s linear infinite;
   z-index: 1;
+  opacity: 1;
 }
 
-@keyframes float {
-  0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity:1;}
-  100% { transform: translateY(-200px) translateX(50px) rotate(360deg); opacity:0;}
-}
-
-/* --- СЛАЙД 1 --- */
+/* --- Слайд 1 --- */
 #slide1 {
   display: flex;
   justify-content: center;
@@ -44,39 +37,30 @@ body {
   height: 200px;
   background: #fff;
   border-radius: 10px;
-  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(0,0,0,0.3);
   z-index: 5;
+  position: relative;
 }
 
-#envelope:hover { transform: scale(1.05); }
-
-#envelope::before {
-  content:"";
-  position:absolute;
-  width:0; height:0;
-  border-left:150px solid transparent;
-  border-right:150px solid transparent;
-  border-bottom:60px solid #fff;
-  top:-60px; left:0;
+#peach1 {
+  font-size:60px;
+  z-index:6;
 }
-
-#peach1 { font-size:60px; z-index:6; }
 
 .flower {
   position: absolute;
   font-size:25px;
-  color: pink;
+  color:pink;
   z-index:6;
 }
 
-/* --- СЛАЙД 2 --- */
+/* --- Слайд 2 --- */
 #slide2 {
-  display: none;
+  display:none;
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -86,53 +70,53 @@ body {
 }
 
 #slide2 h2 {
-  color: #fff;
-  margin-bottom:40px;
+  color:#fff;
   font-size:28px;
+  margin-bottom:20px;
   z-index:5;
+  margin-top:80px; /* чуть ниже центра */
 }
 
 #options {
-  display: flex;
-  gap: 50px;
-  position: relative;
+  display:flex;
+  gap:50px;
   z-index:5;
+  margin-top:20px; /* чуть ниже */
 }
 
 .option {
-  background: #fff;
-  color: #000;
-  border-radius: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 22px;
-  cursor: pointer;
-  transition: all 0.3s;
-  user-select: none;
-  position: relative;
-  overflow: hidden;
-  z-index:5;
+  background:#fff;
+  color:#000;
+  border-radius:20px;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  font-weight:bold;
+  font-size:22px;
+  cursor:pointer;
+  transition:all 0.3s;
   text-align:center;
+  position: relative;
+  width:400px;
+  height:400px;
+  overflow:hidden;
 }
 
 .option .emoji {
-  position: absolute;
+  position:absolute;
   top:10px;
   font-size:35px;
   z-index:1;
 }
 
-/* --- СЛАЙД 3 --- */
+/* --- Слайд 3 --- */
 #slide3 {
-  display: none;
+  display:none;
   width:100%;
   height:100%;
   position: relative;
   justify-content: center;
   align-items: center;
-  font-size:40px;
   overflow: hidden;
 }
 
@@ -142,34 +126,16 @@ body {
   color:#fff;
   font-size:40px;
   text-align:center;
+  width:100%;
 }
 
-/* --- Белые сердечки с хвостами --- */
+/* --- Белые сердца --- */
 .heart {
   position: absolute;
-  color: #fff;
-  font-size: 25px;
-  text-shadow: 0 0 5px #fff;
-  animation: rise 4s linear forwards;
+  color:#fff;
+  font-size:25px;
+  text-shadow:0 0 10px #fff;
   z-index:2;
-}
-
-.heart::after {
-  content:'';
-  position:absolute;
-  width:2px;
-  height:20px;
-  background:#fff;
-  bottom:-20px;
-  left:50%;
-  transform:translateX(-50%);
-  border-radius:1px;
-  opacity:0.7;
-}
-
-@keyframes rise {
-  0% { bottom:0; opacity:1; transform: translateX(0) scale(1);}
-  100% { bottom:100%; opacity:0; transform: translateX(-50px) scale(2);}
 }
 </style>
 </head>
@@ -186,11 +152,11 @@ body {
 <div id="slide2">
   <h2>Любимая, выбор за тобой 😉🫦</h2>
   <div id="options">
-    <div id="efremov" class="option" style="width:400px;height:400px;">
+    <div id="efremov" class="option">
       Ромочка, дорогой, самый любимый, прекрасный и хороший
       <div class="emoji" id="hearts"></div>
     </div>
-    <div id="vampire" class="option" style="width:400px;height:400px;">
+    <div id="vampire" class="option">
       жалкий вампир Деймон
       <div class="emoji" id="dislike"></div>
     </div>
@@ -199,29 +165,29 @@ body {
 
 <!-- Слайд 3 -->
 <div id="slide3">
-  <div id="finalText"></div>
+  <div id="finalText">С 8 Марта тебя, любовь моя ❤️</div>
 </div>
 
 <script>
-const slide1 = document.getElementById('slide1');
-const slide2 = document.getElementById('slide2');
-const slide3 = document.getElementById('slide3');
-const envelope = document.getElementById('envelope');
-const efremov = document.getElementById('efremov');
-const vampire = document.getElementById('vampire');
-const hearts = document.getElementById('hearts');
-const dislike = document.getElementById('dislike');
-const finalText = document.getElementById('finalText');
+const slide1=document.getElementById('slide1');
+const slide2=document.getElementById('slide2');
+const slide3=document.getElementById('slide3');
+const envelope=document.getElementById('envelope');
+const efremov=document.getElementById('efremov');
+const vampire=document.getElementById('vampire');
+const hearts=document.getElementById('hearts');
+const dislike=document.getElementById('dislike');
+const finalText=document.getElementById('finalText');
 
-let efremovSize = 400;
-let vampireSize = 400;
-const minVampire = 20; 
-const maxEfremov = window.innerWidth; 
-const step = (vampireSize - minVampire)/16; 
+let efremovSize=400;
+let vampireSize=400;
+const minVampire=20;
+const maxEfremov=window.innerWidth;
+const step=(vampireSize-minVampire)/16;
 
 // --- Слайд 1: цветы ---
 for(let i=0;i<5;i++){
-  const f = document.createElement('div');
+  const f=document.createElement('div');
   f.classList.add('flower');
   f.style.left=(140+Math.random()*20)+'px';
   f.style.top=(Math.random()*80)+'px';
@@ -229,26 +195,43 @@ for(let i=0;i<5;i++){
   slide1.appendChild(f);
 }
 
-// --- Функция для ярких фоновых эмодзи ---
-function createParticles(parent, count){
+// --- Функция создания эмодзи ---
+function createParticles(parent,count,symbols,minSize,maxSize){
   for(let i=0;i<count;i++){
     const p=document.createElement('div');
     p.classList.add('particle');
-    const symbols=['✨','🌼','🦋','🌸'];
     p.textContent=symbols[Math.floor(Math.random()*symbols.length)];
     p.style.left=Math.random()*window.innerWidth+'px';
-    p.style.bottom=Math.random()*window.innerHeight+'px';
-    p.style.fontSize=(20+Math.random()*20)+'px';
-    p.style.zIndex=1; // под элементами
+    p.style.bottom=-50+'px'; // старт снизу
+    p.style.fontSize=(minSize+Math.random()*(maxSize-minSize))+'px';
     parent.appendChild(p);
   }
 }
 
-// --- Слайд 1 клик ---
+// --- Анимация эмодзи ---
+function animateParticles(){
+  const particles=document.querySelectorAll('.particle');
+  particles.forEach(p=>{
+    let bottom=parseFloat(p.style.bottom);
+    bottom+=1+Math.random()*2; // скорость
+    if(bottom>window.innerHeight+50){
+      bottom=-50; // снова снизу
+      p.style.left=Math.random()*window.innerWidth+'px';
+    }
+    p.style.bottom=bottom+'px';
+  });
+  requestAnimationFrame(animateParticles);
+}
+
+// --- Слайд 1 ---
+createParticles(slide1,50,['✨','🌼','🦋','🌸'],15,30);
+animateParticles();
+
+// --- Клик по конверту ---
 envelope.addEventListener('click',()=>{
   slide1.style.display='none';
   slide2.style.display='flex';
-  createParticles(slide2,30);
+  createParticles(slide2,50,['✨','🌼','🦋','🌸'],15,30); // эмодзи на 2 слайде
 });
 
 // --- Слайд 2 ---
@@ -257,35 +240,35 @@ efremov.addEventListener('click',()=>{
   slide2.style.display='none';
   slide3.style.display='flex';
 
-  // --- Слайд 3: белые сердца с хвостиками ---
-  for(let i=0;i<20;i++){
-    setTimeout(()=>{
-      const heart=document.createElement('div');
-      heart.classList.add('heart');
-      heart.style.left=(Math.random()*window.innerWidth)+'px';
-      heart.style.fontSize=(15+Math.random()*20)+'px';
-      slide3.appendChild(heart);
-    },i*200);
-  }
+  // белые сердца на 3 слайде
+  setInterval(()=>{
+    const heart=document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left=Math.random()*window.innerWidth+'px';
+    heart.style.fontSize=(15+Math.random()*15)+'px';
+    heart.style.bottom='-30px';
+    slide3.appendChild(heart);
 
-  // --- Текст белый ---
-  let text="С 8 Марта тебя, любовь моя ❤️";
-  let idx=0;
-  const interval=setInterval(()=>{
-    finalText.textContent=text.slice(0,idx);
-    idx++;
-    if(idx>text.length) clearInterval(interval);
-  },100);
+    // анимация движения вверх
+    let b= -30;
+    function rise(){
+      b+=1+Math.random();
+      if(b>window.innerHeight+50){
+        heart.remove();
+        return;
+      }
+      heart.style.bottom=b+'px';
+      requestAnimationFrame(rise);
+    }
+    rise();
+  },200);
 });
 
-// --- Слайд 2: вампир ---
 vampire.addEventListener('click',()=>{
   vampireSize=Math.max(minVampire,vampireSize-step);
   efremovSize=Math.min(maxEfremov,efremovSize+step);
-
   vampire.style.width=vampire.style.height=vampireSize+'px';
   efremov.style.width=efremov.style.height=efremovSize+'px';
-
   dislike.textContent+='👎';
 });
 </script>
