@@ -1,67 +1,133 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="ru">
 <head>
+<meta charset="UTF-8">
 <title>Для тебя ❤️</title>
-
 <style>
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #800000; /* бордовый фон */
+    font-family: Arial, sans-serif;
+  }
 
-body{
-background:#ffb6c1;
-font-family:Arial;
-text-align:center;
-margin-top:120px;
-}
+  /* Стартовая открытка */
+  #card {
+    width: 300px;
+    height: 300px;
+    background: #ffb6c1;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
+  }
 
-button{
-font-size:60px;
-padding:20px;
-border:none;
-background:none;
-cursor:pointer;
-}
+  #card:hover {
+    transform: scale(1.05);
+  }
 
-#message{
-font-size:30px;
-margin-top:40px;
-color:#800000;
-}
+  #peach {
+    font-size: 80px;
+  }
+
+  /* Экран выбора */
+  #choiceScreen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  #choiceScreen h2 {
+    color: #fff;
+    margin-bottom: 40px;
+    font-size: 30px;
+  }
+
+  #options {
+    display: flex;
+    gap: 50px;
+  }
+
+  .option {
+    width: 150px;
+    height: 150px;
+    background: #ffb6c1;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+    color: #800000;
+    user-select: none;
+  }
+
+  #message {
+    margin-top: 40px;
+    font-size: 30px;
+    color: #fff;
+  }
 
 </style>
-
 </head>
-
 <body>
 
-<h1>У меня для тебя кое-что есть ❤️</h1>
+  <!-- Стартовая открытка -->
+  <div id="card">
+    <div id="peach">🍑</div>
+  </div>
 
-<button onclick="showMessage()">🍑</button>
-
-<div id="message"></div>
+  <!-- Экран выбора -->
+  <div id="choiceScreen">
+    <h2>Сделай правильный выбор</h2>
+    <div id="options">
+      <div id="efremov" class="option">Ефремов ВЕЛИКИЙ</div>
+      <div id="vampire" class="option">жалкий вампир Деймон</div>
+    </div>
+    <div id="message"></div>
+  </div>
 
 <script>
+const card = document.getElementById('card');
+const choiceScreen = document.getElementById('choiceScreen');
+const efremov = document.getElementById('efremov');
+const vampire = document.getElementById('vampire');
+const message = document.getElementById('message');
 
-let text = "С 8 марта ❤️";   // потом поменяем на твой текст
-let i = 0;
+let efremovSize = 150;
+let vampireSize = 150;
+const minSize = 50;
+const maxSize = 250;
+const step = 20;
 
-function showMessage(){
+// Нажатие на персик открывает выбор
+card.addEventListener('click', () => {
+  card.style.display = 'none';
+  choiceScreen.style.display = 'flex';
+});
 
-let speed = 50;
+// Нажатие на Ефремова
+efremov.addEventListener('click', () => {
+  message.textContent = "С 8 марта ❤️";
+});
 
-function typeWriter(){
-if (i < text.length){
-document.getElementById("message").innerHTML += text.charAt(i);
-i++;
-setTimeout(typeWriter, speed);
-}
-}
-
-typeWriter();
-
-}
-
+// Нажатие на вампира
+vampire.addEventListener('click', () => {
+  vampireSize = Math.max(minSize, vampireSize - step);
+  efremovSize = Math.min(maxSize, efremovSize + step);
+  vampire.style.width = vampire.style.height = vampireSize + 'px';
+  efremov.style.width = efremov.style.height = efremovSize + 'px';
+});
 </script>
 
 </body>
-
 </html>
