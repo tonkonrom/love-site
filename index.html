@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Для тебя ❤️</title>
+
+<style>
+body{
+background:pink;
+text-align:center;
+font-family:Arial;
+margin-top:120px;
+}
+
+button{
+font-size:25px;
+padding:20px 40px;
+background:red;
+color:white;
+border:none;
+border-radius:10px;
+cursor:pointer;
+}
+
+#message{
+font-size:30px;
+margin-top:40px;
+}
+</style>
+
+</head>
+
+<body>
+
+<h1>У меня для тебя кое-что есть ❤️</h1>
+
+<button onclick="showMessage()">Нажми меня</button>
+
+<div id="message"></div>
+
+<script>
+
+function showMessage(){
+document.getElementById("message").innerHTML =
+"С 8 марта ❤️ Ты самая лучшая!";
+}
+
+</script>
+
+</body>
+</html>
