@@ -10,21 +10,22 @@ body {
   overflow: hidden;
   background-color: #800000;
   font-family: Arial, sans-serif;
+  position: relative;
 }
 
 /* --- Фоновая анимация --- */
 .particle {
   position: absolute;
-  color: #fff;
-  font-size: 10px;
+  font-size: 15px;
   pointer-events: none;
   user-select: none;
+  opacity: 0.8;
   animation: float 20s linear infinite;
 }
 
 @keyframes float {
-  0% { transform: translateY(0) translateX(0) rotate(0deg); opacity: 0.5; }
-  100% { transform: translateY(-1200px) translateX(50px) rotate(360deg); opacity: 0; }
+  0% { transform: translateY(100vh) translateX(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-200px) translateX(50px) rotate(360deg); opacity: 0; }
 }
 
 /* --- СЛАЙД 1 --- */
@@ -77,8 +78,9 @@ body {
 /* Цветы торчащие из конверта */
 .flower {
   position: absolute;
-  font-size: 20px;
+  font-size: 25px;
   color: pink;
+  z-index: 2;
 }
 
 /* --- СЛАЙД 2 --- */
@@ -97,11 +99,14 @@ body {
   color: #fff;
   margin-bottom: 40px;
   font-size: 28px;
+  z-index: 5; /* поверх эмодзи */
 }
 
 #options {
   display: flex;
   gap: 50px;
+  position: relative;
+  z-index: 5; /* поверх эмодзи */
 }
 
 .option {
@@ -118,12 +123,13 @@ body {
   user-select: none;
   position: relative;
   overflow: hidden;
+  z-index: 5;
 }
 
 .option .emoji {
   position: absolute;
   top: 10px;
-  font-size: 30px;
+  font-size: 35px;
 }
 
 /* --- СЛАЙД 3 --- */
@@ -134,24 +140,44 @@ body {
   position: relative;
   justify-content: center;
   align-items: center;
-  color: #fff;
   font-size: 40px;
   overflow: hidden;
 }
 
-/* Анимация сердечек */
+#finalText {
+  position: absolute;
+  z-index: 5;
+  color: #fff;
+  font-size: 40px;
+  text-align: center;
+}
+
+/* --- Белые сердечки с хвостами --- */
 .heart {
   position: absolute;
   color: #fff;
-  font-size: 20px;
+  font-size: 25px;
+  text-shadow: 0 0 5px #fff;
   animation: rise 4s linear forwards;
 }
 
 @keyframes rise {
-  0% { bottom: 0; opacity: 0.8; transform: translateX(0) scale(1);}
+  0% { bottom: 0; opacity: 1; transform: translateX(0) scale(1);}
   100% { bottom: 100%; opacity: 0; transform: translateX(-50px) scale(2);}
 }
 
+.heart::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 20px;
+  background: #fff;
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-radius: 1px;
+  opacity: 0.7;
+}
 </style>
 </head>
 <body>
@@ -191,14 +217,13 @@ const finalText = document.getElementById('finalText');
 
 let efremovSize = 400;
 let vampireSize = 400;
-const minVampire = 20; // маленький до трудно нажимать
+const minVampire = 20; 
 const maxEfremov = window.innerWidth; 
 const step = (vampireSize - minVampire) / 16; 
 
 // --- Создаем цветы из конверта ---
 const slide1El = document.getElementById('slide1');
-const flowerCount = 5;
-for(let i=0;i<flowerCount;i++){
+for(let i=0;i<5;i++){
   const f = document.createElement('div');
   f.classList.add('flower');
   f.style.left = (140 + Math.random()*20) + 'px';
@@ -207,34 +232,27 @@ for(let i=0;i<flowerCount;i++){
   slide1El.appendChild(f);
 }
 
-// --- Фоновые бабочки и звездочки ---
-for(let i=0;i<30;i++){
-  const p = document.createElement('div');
-  p.classList.add('particle');
-  const symbols = ['✨','🌼','🦋','🌸'];
-  p.textContent = symbols[Math.floor(Math.random()*symbols.length)];
-  p.style.left = Math.random()*window.innerWidth + 'px';
-  p.style.top = Math.random()*window.innerHeight + 'px';
-  p.style.fontSize = (10 + Math.random()*20) + 'px';
-  slide1El.appendChild(p);
+// --- Фоновые яркие эмодзи ---
+function createParticles(parent, count){
+  for(let i=0;i<count;i++){
+    const p = document.createElement('div');
+    p.classList.add('particle');
+    const symbols = ['✨','🌼','🦋','🌸'];
+    p.textContent = symbols[Math.floor(Math.random()*symbols.length)];
+    p.style.left = Math.random()*window.innerWidth + 'px';
+    p.style.bottom = Math.random()*window.innerHeight + 'px';
+    p.style.fontSize = (20 + Math.random()*20) + 'px';
+    p.style.opacity = 1;
+    p.style.zIndex = 1; // под всеми элементами
+    parent.appendChild(p);
+  }
 }
 
 // --- СЛАЙД 1 ---
 envelope.addEventListener('click', () => {
   slide1.style.display = 'none';
   slide2.style.display = 'flex';
-
-  // Еще фоновые частицы на 2 слайде
-  for(let i=0;i<20;i++){
-    const p = document.createElement('div');
-    p.classList.add('particle');
-    const symbols = ['✨','🌼','🌸'];
-    p.textContent = symbols[Math.floor(Math.random()*symbols.length)];
-    p.style.left = Math.random()*window.innerWidth + 'px';
-    p.style.top = Math.random()*window.innerHeight + 'px';
-    p.style.fontSize = (10 + Math.random()*20) + 'px';
-    slide2.appendChild(p);
-  }
+  createParticles(slide2, 30); // фоновые эмодзи на 2 слайде
 });
 
 // --- СЛАЙД 2 ---
@@ -243,14 +261,13 @@ efremov.addEventListener('click', () => {
   slide2.style.display = 'none';
   slide3.style.display = 'flex';
 
-  // --- СЛАЙД 3 анимация сердечек ---
+  // --- СЛАЙД 3 анимация белых сердечек с хвостами ---
   for(let i=0;i<20;i++){
     setTimeout(()=>{
       const heart = document.createElement('div');
       heart.classList.add('heart');
       heart.style.left = (Math.random()*window.innerWidth) + 'px';
       heart.style.fontSize = (15+Math.random()*20)+'px';
-      heart.textContent = '❤️';
       slide3.appendChild(heart);
     }, i*200);
   }
@@ -263,6 +280,18 @@ efremov.addEventListener('click', () => {
     idx++;
     if(idx>text.length) clearInterval(interval);
   }, 100);
+
+  // Проверка цвета текста при пересечении с сердечками
+  const checkColor = setInterval(()=>{
+    const heartsElems = document.querySelectorAll('.heart');
+    heartsElems.forEach(h=>{
+      const hRect = h.getBoundingClientRect();
+      const tRect = finalText.getBoundingClientRect();
+      if(hRect.bottom >= tRect.top && hRect.top <= tRect.bottom){
+        finalText.style.color = '#000'; // меняем текст на черный
+      }
+    });
+  },50);
 });
 
 vampire.addEventListener('click', () => {
