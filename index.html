@@ -243,9 +243,18 @@ efremov.addEventListener('click',()=>{
   },500);
 });
 
+let vampSize = 400;
+let efremovSize = 400;
+
 vampire.addEventListener('click',()=>{
-  vampire.style.width= vampire.style.height=Math.max(20,parseInt(vampire.style.width)-25)+'px';
-  efremov.style.width= efremov.style.height=Math.min(window.innerWidth,parseInt(efremov.style.width)+25)+'px';
+  vampSize = Math.max(20, vampSize - 25);
+  efremovSize = Math.min(window.innerWidth, efremovSize + 25);
+
+  vampire.style.width = vampSize + 'px';
+  vampire.style.height = vampSize + 'px';
+
+  efremov.style.width = efremovSize + 'px';
+  efremov.style.height = efremovSize + 'px';
 });
 </script>
 </body>
